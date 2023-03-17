@@ -40,13 +40,89 @@ function llenarTabla() {
     console.log(tablaUsuario);
 }
 
+function verificarLetraAlfabeto(caracter){
+    var carac;
+    for(var i=0; i<alfabeto.length; i++){
+        if(alfabeto[i]==caracter){
+            carac=alfabeto[i];
+        }
+    }
+
+    return carac;
+}
+
+function obtenerPosicionAlfabeto(cadena){
+    var posicion=0;
+
+    for(var i=0; i<alfabeto.length; i++){
+        if(alfabeto[i]==cadena){
+            posicion=i;
+        }
+    }
+
+    return posicion;
+}
+
+function obtenerEstadoFinal(esta){
+    var estadoFinalAux=-1;
+    var estadoString=esta.toString();
+
+    for(var i=0; i<arregloEstadosFinales.length; i++){
+        if(arregloEstadosFinales[i]==estadoString){
+            var EstadoInt;
+            EstadoInt=parseInt(estadoString, 10);
+            estadoFinalAux=EstadoInt;
+
+        }
+    }
+
+    return estadoFinalAux;
+}
+
+
+
+var estadoCadena=0;
+var aux;
 function validarCadena() {
     var cadena = prompt("Ingrese la cadena a validar: ");
-    var saleEstado = [cadena.length + 1];
-    saleEstado[0] = 0;
 
-    console.log(cadena[0])
+    //For para recorrer la cadena
+    for(var i=0; i<cadena.length; i++){
+        //Verificamos si el caracter de la cadena esta dentro del alfabeto
+        if(cadena[i]==verificarLetraAlfabeto(cadena[i])){
+            //Guardamos el esatdo acutal con el siguiente
+            estadoCadena=tablaUsuario[estadoCadena][obtenerPosicionAlfabeto(cadena[i])];
+            aux=true
+        }else{
+            console.log("Un caracter de la cadena no es parte del alfabeto");
+            aux=false;
+            estadoCadena=99;
+        }
+    }
+
+    //Verificamos el estado
+    if(aux!=false){
+        if(estadoCadena==obtenerEstadoFinal(estadoCadena)){
+            aux=true;
+            estadoCadena=0;
+
+        }else{
+            console.log("Cadena no aceptada");
+            aux=false;
+            estadoCadena=0;
+        }
+    }
+
+    if(aux==true){
+        console.log("Cadena aceptada");
+    }
+
+    console.log(cadena[0]);
 }
 
 ingresarEstados();
 llenarTabla();
+
+for(var i=0; i<4; i++){
+    validarCadena();
+}
